@@ -2967,6 +2967,8 @@ func (tr *Instance) LateInitialize(attrs []byte) (bool, error) {
 	}
 	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
 	opts = append(opts, resource.WithNameFilter("AssociatePublicIPAddress"))
+	opts = append(opts, resource.WithNameFilter("IPv6AddressCount"))
+	opts = append(opts, resource.WithNameFilter("IPv6Addresses"))
 	opts = append(opts, resource.WithNameFilter("NetworkInterface"))
 	opts = append(opts, resource.WithNameFilter("PrivateIP"))
 	opts = append(opts, resource.WithNameFilter("SourceDestCheck"))
@@ -3565,6 +3567,7 @@ func (tr *NetworkInterface) LateInitialize(attrs []byte) (bool, error) {
 	}
 	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
 	opts = append(opts, resource.WithNameFilter("InterfaceType"))
+	opts = append(opts, resource.WithNameFilter("IPv6AddressCount"))
 	opts = append(opts, resource.WithNameFilter("PrivateIPList"))
 	opts = append(opts, resource.WithNameFilter("PrivateIps"))
 
