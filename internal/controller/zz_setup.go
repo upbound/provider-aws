@@ -433,6 +433,7 @@ import (
 	thing "github.com/upbound/provider-aws/internal/controller/iot/thing"
 	clusterkafka "github.com/upbound/provider-aws/internal/controller/kafka/cluster"
 	configuration "github.com/upbound/provider-aws/internal/controller/kafka/configuration"
+	scramsecretassociation "github.com/upbound/provider-aws/internal/controller/kafka/scramsecretassociation"
 	streamkinesis "github.com/upbound/provider-aws/internal/controller/kinesis/stream"
 	streamconsumer "github.com/upbound/provider-aws/internal/controller/kinesis/streamconsumer"
 	applicationkinesisanalytics "github.com/upbound/provider-aws/internal/controller/kinesisanalytics/application"
@@ -1014,6 +1015,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		thing.Setup,
 		clusterkafka.Setup,
 		configuration.Setup,
+		scramsecretassociation.Setup,
 		streamkinesis.Setup,
 		streamconsumer.Setup,
 		applicationkinesisanalytics.Setup,
