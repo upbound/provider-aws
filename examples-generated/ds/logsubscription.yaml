@@ -1,0 +1,50 @@
+apiVersion: ds.aws.upbound.io/v1beta1
+kind: LogSubscription
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ds/v1beta1/logsubscription
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    directoryIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    logGroupNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    region: us-west-1
+
+---
+
+apiVersion: cloudwatchlogs.aws.upbound.io/v1beta1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ds/v1beta1/logsubscription
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    region: us-west-1
+    retentionInDays: 14
+
+---
+
+apiVersion: cloudwatchlogs.aws.upbound.io/v1beta1
+kind: ResourcePolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ds/v1beta1/logsubscription
+  labels:
+    testing.upbound.io/example-name: ad-log-policy
+  name: ad-log-policy
+spec:
+  forProvider:
+    policyDocument: ${data.aws_iam_policy_document.ad-log-policy.json}
+    region: us-west-1
+
+---
+

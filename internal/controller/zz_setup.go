@@ -253,7 +253,9 @@ import (
 	eventsubscription "github.com/upbound/provider-aws/internal/controller/docdb/eventsubscription"
 	globalcluster "github.com/upbound/provider-aws/internal/controller/docdb/globalcluster"
 	subnetgroupdocdb "github.com/upbound/provider-aws/internal/controller/docdb/subnetgroup"
+	conditionalforwarder "github.com/upbound/provider-aws/internal/controller/ds/conditionalforwarder"
 	directory "github.com/upbound/provider-aws/internal/controller/ds/directory"
+	logsubscription "github.com/upbound/provider-aws/internal/controller/ds/logsubscription"
 	contributorinsights "github.com/upbound/provider-aws/internal/controller/dynamodb/contributorinsights"
 	globaltable "github.com/upbound/provider-aws/internal/controller/dynamodb/globaltable"
 	kinesisstreamingdestination "github.com/upbound/provider-aws/internal/controller/dynamodb/kinesisstreamingdestination"
@@ -1015,7 +1017,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		eventsubscription.Setup,
 		globalcluster.Setup,
 		subnetgroupdocdb.Setup,
+		conditionalforwarder.Setup,
 		directory.Setup,
+		logsubscription.Setup,
 		contributorinsights.Setup,
 		globaltable.Setup,
 		kinesisstreamingdestination.Setup,

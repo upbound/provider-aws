@@ -9,10 +9,37 @@ import (
 	"context"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
+	v1beta11 "github.com/upbound/provider-aws/apis/cloudwatchlogs/v1beta1"
 	v1beta1 "github.com/upbound/provider-aws/apis/ec2/v1beta1"
 	resource "github.com/upbound/upjet/pkg/resource"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+// ResolveReferences of this ConditionalForwarder.
+func (mg *ConditionalForwarder) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DirectoryID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.DirectoryIDRef,
+		Selector:     mg.Spec.ForProvider.DirectoryIDSelector,
+		To: reference.To{
+			List:    &DirectoryList{},
+			Managed: &Directory{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DirectoryID")
+	}
+	mg.Spec.ForProvider.DirectoryID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DirectoryIDRef = rsp.ResolvedReference
+
+	return nil
+}
 
 // ResolveReferences of this Directory.
 func (mg *Directory) ResolveReferences(ctx context.Context, c client.Reader) error {
@@ -76,6 +103,48 @@ func (mg *Directory) ResolveReferences(ctx context.Context, c client.Reader) err
 		mg.Spec.ForProvider.VPCSettings[i3].VPCIDRef = rsp.ResolvedReference
 
 	}
+
+	return nil
+}
+
+// ResolveReferences of this LogSubscription.
+func (mg *LogSubscription) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DirectoryID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.DirectoryIDRef,
+		Selector:     mg.Spec.ForProvider.DirectoryIDSelector,
+		To: reference.To{
+			List:    &DirectoryList{},
+			Managed: &Directory{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DirectoryID")
+	}
+	mg.Spec.ForProvider.DirectoryID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DirectoryIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.LogGroupName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.LogGroupNameRef,
+		Selector:     mg.Spec.ForProvider.LogGroupNameSelector,
+		To: reference.To{
+			List:    &v1beta11.GroupList{},
+			Managed: &v1beta11.Group{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.LogGroupName")
+	}
+	mg.Spec.ForProvider.LogGroupName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.LogGroupNameRef = rsp.ResolvedReference
 
 	return nil
 }
