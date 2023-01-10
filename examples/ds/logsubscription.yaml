@@ -2,7 +2,7 @@ apiVersion: ds.aws.upbound.io/v1beta1
 kind: LogSubscription
 metadata:
   annotations:
-    uptest.upbound.io/timeout: "3600" # one hour timeout
+    uptest.upbound.io/timeout: "7200" # two hour timeout
     meta.upbound.io/example-id: ds/v1beta1/logsubscription
   labels:
     testing.upbound.io/example-name: example
